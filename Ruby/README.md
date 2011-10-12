@@ -1,6 +1,8 @@
 This is a simple file that runs through a number of the common REST API calls, both authenticated and unauthenticated.
 
-For Ruby, these code samples rely upon the [Ruby OAuth Gem](http://oauth.rubyforge.org) to provide the OAuth functionality.
+For Ruby, these code samples rely upon the [Ruby OAuth Gem](http://oauth.rubyforge.org) to provide the OAuth functionality.  
+
+*NOTE* For the signing to work, you must be using the OAuth Gem *v.0.3.6*.  In later versions, they began implementing [OAuth Request Body Hash](http://oauth.googlecode.com/svn/spec/ext/body_hash/1.0/drafts/1/spec.html), with no way to disable it, which we do not support.
 
 Simple example for searching Wishpot for a list:
 
