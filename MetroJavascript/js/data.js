@@ -24,7 +24,7 @@
 
     var list = new WinJS.Binding.List();
     var groups = [];
-
+    var colors = ['rgba(209, 211, 212, 1)', 'rgba(147, 149, 152, 1)', 'rgba(65, 64, 66, 1)'];
 
     function getPopular() {
         return WPJS.Consumer.apiXhr("/restapi/Product/Browse", "GET").then(
@@ -36,7 +36,7 @@
     function loadResultJson(result, appendToList) {
         console.log(result);
         var results = $.parseJSON(result.response);
-        var colors = ['rgba(209, 211, 212, 1)', 'rgba(147, 149, 152, 1)', 'rgba(65, 64, 66, 1)'];
+        
  
         $.each(results.Results, function (i, prod) {
             var p = {};
@@ -82,83 +82,20 @@
             appendToList.push(p);
         });
 
-
     }
 
-    function loadResultXml(result, appendToList) {
-        var xml = result.responseXML;
+    function groupKeySelector(item) {
+        return item.group.key;
+    }
 
-        var colors = ['rgba(209, 211, 212, 1)', 'rgba(147, 149, 152, 1)', 'rgba(65, 64, 66, 1)'];
-        var items = xml.selectNodes("SearchResult/Results/Result");
+    function groupDataSelector(item) {
+        return item.group;
+    }
 
-        if (items) {
-            var length = Math.min(500, items.length);  //hard-coded max to prevent potential bugs
-            for (var i = 0; i < length; i++) {
-                // link.setAttribute("href", items[i].selectSingleNode("link").text);
-                // link.innerText = (i + 1) + ") " + items[i].selectSingleNode("title").text;
-                var cat = items[i].selectSingleNode("CategoryId");
-                var currGroup = null;
-                if (cat != null && cat.text != null) {
-                    if (groups[cat.text] == null) {
-                        groups[cat.text] = {
-                            key: 'group' + cat.text,
-                            title: WPJS.Categories()[cat.text],
-                            backgroundColor: colors[i % colors.length]
-                        };
-                        //WPJS.Debug("Added category to list: " + cat.text + " (" + WPJS.Categories()[cat.text] + ")");
-                    }
-                    else {
-                        //WPJS.Debug("Category already present: " + cat.text);
-                    }
-                    currGroup = groups[cat.text];
-                }
-
-
-                var desc = WPJS.XML.safeParseXmlText(items[i], "Description", '(no description)');
-                var price = null;
-                if (items[i].selectSingleNode("DisplayPrice") != null) {
-                    var tp = items[i].selectSingleNode("DisplayPrice").text;
-                    tp = isNaN(tp) || tp === '' || tp === null ? 0.00 : tp;
-                    price = parseFloat(tp).toFixed(2);
-                }
-
-                var pic = null;
-                var largePic = null;
-                var picNodes = null;
-
-                if (items[i].selectNodes("ProductPicture/CalculatedUrl1") != null && items[i].selectNodes("ProductPicture/CalculatedUrl1")[0] != null)
-                    picNodes = items[i].selectNodes("ProductPicture/CalculatedUrl1");
-                else
-                    picNodes = items[i].selectNodes("ProductPicture/CalculatedUrl0");
-
-
-                if (items[i].selectNodes("ProductPicture/CalculatedUrl2") != null && items[i].selectNodes("ProductPicture/CalculatedUrl2")[0] != null)
-                    largePic = items[i].selectNodes("ProductPicture/CalculatedUrl2")[0].text;
-
-
-                if (null != picNodes && null != picNodes[0])
-                    pic = picNodes[0].text;
-
-                if (null == largePic)
-                    largePic = pic;
-
-                var product = new Product();
-                product.title = WPJS.XML.safeParseXmlText(items[i], "Title", '(no title)');
-                product.price = price,
-                product.picture = pic;
-                product.largePicture = largePic;
-                product.description = desc;
-                product.url = WPJS.XML.safeParseXmlText(items[i], "RedirectUrl", null);
-
-                appendToList.push({
-                    group: currGroup,
-                    key: 'item' + WPJS.XML.safeParseXmlText(items[i], "Id", 'i_' + i),
-                    backgroundColor: colors[i % colors.length],
-                    product: product
-                });
-            }
-        } 
-
+    // This function returns a WinJS.Binding.List containing only the items
+    // that belong to the provided group.
+    function getItemsFromGroup(group) {
+        return list.createFiltered(function (item) { return item.group.key === group.key; });
     }
 
     // This function returns a WinJS.Binding.List containing only the items
@@ -169,36 +106,20 @@
 
     // Returns the group key that an item belongs to.
     function getCategoryGroupKey(item) {
-        return item.categoryId;
-    }
-
-    // Returns the title for a group.
-    function getGroupData(item) {
-        return {
-            title: groups[item.categoryId].title,
-        };
-    }
-
-
-    function getGroupedData() {
-        return list.createGrouped(
-            getCategoryGroupKey,
-            getGroupData,
-            function (l, r) { return l < r; }
-        );
+        return item.group.key;
     }
 
 
     // TODO: Replace the data with your real data.
     // You can add data from asynchronous sources whenever it becomes available.
     getPopular();
-    var groupedItems = getGroupedData();
+    var groupedItems = list.createGrouped(groupKeySelector, groupDataSelector);;
 
     WinJS.Namespace.define("popularProducts", {
         items: groupedItems,
         groups: groupedItems.groups,
         getItemsFromGroup: getItemsFromGroup,
-        groupKeySelector: getCategoryGroupKey,
+        groupKeySelector: groupKeySelector,
 
     });
 })();
