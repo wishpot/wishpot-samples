@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
-  <Identity Name="a11ae3b2-4e6b-452b-bc31-4baf50fc0ed3" Version="1.0.0.0" Publisher="CN=tlianza" />
+  <Identity Name="26579291-003f-436d-83ee-2cda042fb388" Version="1.0.0.0" Publisher="CN=tlianza" />
   <Properties>
     <DisplayName>WishpotMetro</DisplayName>
     <Description>WishpotMetro</Description>
@@ -12,22 +12,17 @@
     <OSMaxVersionTested>6.2</OSMaxVersionTested>
   </Prerequisites>
   <Resources>
-    <Resource Language="en-US" />
+    <Resource Language="x-generate" />
   </Resources>
   <Applications>
     <Application Id="App" StartPage="default.html">
-      <VisualElements DisplayName="Wishpot" Logo="images\logo.png" SmallLogo="images\smalllogo.png" Description="Wishpot Metro App" ForegroundText="light" BackgroundColor="#0084FF" InitialRotationPreference="portrait">
-        <DefaultTile ShowName="true" />
+      <VisualElements DisplayName="Wishpot" Logo="images\logo.png" SmallLogo="images\smalllogo.png" Description="Wishpot" ForegroundText="light" BackgroundColor="#000000">
+        <DefaultTile ShowName="allLogos" />
         <SplashScreen Image="images\splashscreen.png" />
       </VisualElements>
-      <Extensions>
-        <Extension Category="windows.search" />
-      </Extensions>
     </Application>
   </Applications>
   <Capabilities>
     <Capability Name="internetClient" />
-    <Capability Name="privateNetworkClientServer" />
-    <DeviceCapability Name="location" />
   </Capabilities>
 </Package>

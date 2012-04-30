@@ -1,8 +1,8 @@
-﻿WISHPOT_HOSTNAME = "www.wishpot.com"; //"main.test.wishpot.com"; 
+﻿WISHPOT_HOSTNAME = "main.test.wishpot.com"; //"main.test.wishpot.com"; 
 WISHPOT_IMG_ROOT = "//" + WISHPOT_HOSTNAME + "/img/";
 PRODUCT_PORTALS_KEY = "558";
-//FACEBOOK_APP_ID = "3003981649"; 
-FACEBOOK_APP_ID = "2456371452";
+FACEBOOK_APP_ID = "3003981649"; 
+//FACEBOOK_APP_ID = "2456371452";
 
 var WPJS = {
     BaseUri: WISHPOT_HOSTNAME,
@@ -50,6 +50,13 @@ var WPJS = {
             OAuth.setTimestampAndNonce(message);
             OAuth.completeRequest(message, WPJS.Consumer.generateAccess());
             return OAuth.addToURL(message.action, message.parameters);
+        },
+
+        //Returns an WinJS.xhr object calling the given method.
+        apiXhr: function (apiPath, method, params) {
+            var message = WPJS.Consumer.generateBaseConsumerMessage(apiPath, method, params);
+            var url = WPJS.Consumer.generateFinalUrl(message);
+            return WinJS.xhr({ url: url, type: message.method, headers: { "Accept": "application/json" } });
         }
     },
 
@@ -339,26 +346,20 @@ var WPJS = {
     loadCategories: function () {
         if (WPJS.Categories().length > 0) return;
 
-        WinJS.xhr({ url: "http://" + WISHPOT_HOSTNAME + "/restapi/Category" }).then(
+        WinJS.xhr({ url: "http://" + WISHPOT_HOSTNAME + "/restapi/Category", headers: { accept: 'application/json'}}).then(
             function (result) {
-            WPJS._loadCategoryXml(result);
-        },
-        function (result) {
-            console.log("Error: " + result.status);
-        });
-    },
-
-    _loadCategoryXml: function (result) {
-        var xml = result.responseXML;
-        var items = xml.selectNodes("Categories/Category");
-        if (items) {
-            var length = Math.min(5000, items.length);  //hard-coded max to prevent potential bugs
-            var categories = [];
-            for (var i = 0; i < length; i++) {
-                categories[items[i].selectSingleNode("Id").text] = items[i].selectSingleNode("Name").text;
+                var cats = $.parseJSON(result.response);
+                console.log(result);
+                var categoryArray = [];
+                $.each(cats.Categories, function (i,cat) {
+                    categoryArray[cat.Id] = cat.Name;
+                });
+                WPJS.LocalCache.set("wishpotCategories", categoryArray, 60);
+            },
+            function (result) {
+                console.log("Error: " + result.status);
             }
-            WPJS.LocalCache.set("wishpotCategories", categories, 60);
-        }
+        );
     },
 
     LocalCache:
