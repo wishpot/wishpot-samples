@@ -11,10 +11,10 @@
             var item = options && options.item ? options.item : data.items.getAt(0);
             element.querySelector(".titlearea .pagetitle").textContent = item.group.title;
             element.querySelector("article .item-title").textContent = item.title;
-            element.querySelector("article .item-subtitle").textContent = item.subtitle;
-            element.querySelector("article .item-image").src = item.backgroundImage;
-            element.querySelector("article .item-image").alt = item.subtitle;
-            element.querySelector("article .item-content").innerHTML = item.content;
+            element.querySelector("article .item-subtitle").textContent = item.brand;
+            element.querySelector("article .item-image").src = item.picture;
+            element.querySelector("article .item-image").alt = item.title;
+            element.querySelector("article .item-content").innerHTML = item.description;
         }
     })
 })();
