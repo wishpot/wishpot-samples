@@ -4,7 +4,7 @@
   <Properties>
     <DisplayName>WishpotMetro</DisplayName>
     <Description>WishpotMetro</Description>
-    <PublisherDisplayName>tlianza</PublisherDisplayName>
+    <PublisherDisplayName>Wishpot, Inc</PublisherDisplayName>
     <Logo>images\storelogo.png</Logo>
   </Properties>
   <Prerequisites>
@@ -16,10 +16,13 @@
   </Resources>
   <Applications>
     <Application Id="App" StartPage="default.html">
-      <VisualElements DisplayName="Wishpot" Logo="images\logo.png" SmallLogo="images\smalllogo.png" Description="Wishpot" ForegroundText="light" BackgroundColor="#000000">
-        <DefaultTile ShowName="allLogos" />
-        <SplashScreen Image="images\splashscreen.png" />
+      <VisualElements DisplayName="Wishpot" Logo="images\wishpot_win8_square.png" SmallLogo="images\wishpot_win8_small.png" Description="Wishpot" ForegroundText="light" BackgroundColor="#ffffff">
+        <DefaultTile ShowName="allLogos" WideLogo="images\wishpot_win8_wide.png" />
+        <SplashScreen Image="images\splashscreen.png" BackgroundColor="#000000" />
       </VisualElements>
+      <Extensions>
+        <Extension Category="windows.search" StartPage="default.html" />
+      </Extensions>
     </Application>
   </Applications>
   <Capabilities>

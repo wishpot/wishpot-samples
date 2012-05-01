@@ -59,10 +59,15 @@
     <Content Include="html\groupDetailPage.html" />
     <Content Include="html\itemDetailPage.html" />
     <Content Include="html\groupedItemsPage.html" />
+    <Content Include="html\search.css" />
+    <Content Include="html\search.html" />
     <Content Include="images\logo.png" />
     <Content Include="images\smalllogo.png" />
     <Content Include="images\splashscreen.png" />
     <Content Include="images\storelogo.png" />
+    <Content Include="images\wishpot_win8_small.png" />
+    <Content Include="images\wishpot_win8_square.png" />
+    <Content Include="images\wishpot_win8_wide.png" />
     <Content Include="js\external\jquery-1.7.1.js" />
     <Content Include="js\external\jquery-1.7.1.min.js" />
     <Content Include="js\external\oauth.js" />
@@ -73,6 +78,7 @@
     <Content Include="js\data.js" />
     <Content Include="js\itemDetailPage.js" />
     <Content Include="js\groupedItemsPage.js" />
+    <Content Include="js\search.js" />
     <Content Include="js\wpjs.js" />
     <None Include="WishpotMetro_TemporaryKey.pfx" />
   </ItemGroup>

@@ -15,6 +15,15 @@
             element.querySelector("article .item-image").src = item.picture;
             element.querySelector("article .item-image").alt = item.title;
             element.querySelector("article .item-content").innerHTML = item.description;
+
+            element.querySelector('article .buy').onclick = function () {
+                window.open(item.url);
+            }
+            element.querySelector('article .add').onclick = function () {
+                WPJS.EnsureAuth(function (result) {
+
+                });
+            }
         }
     })
 })();

@@ -30,10 +30,10 @@
                         title: WPJS.Categories()[p.categoryId],
                         backgroundColor: colors[i % colors.length]
                     };
-                    WPJS.Debug("Added category to list: " + p.categoryId + " (" + WPJS.Categories()[p.categoryId] + ")");
+                    //WPJS.Debug("Added category to list: " + p.categoryId + " (" + WPJS.Categories()[p.categoryId] + ")");
                 }
                 else {
-                    WPJS.Debug("Category already present: " + p.categoryId);
+                    //WPJS.Debug("Category already present: " + p.categoryId);
                 }
                 currGroup = groups[p.categoryId];
                 p.group = currGroup;
