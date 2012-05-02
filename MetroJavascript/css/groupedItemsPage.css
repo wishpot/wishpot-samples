@@ -127,3 +127,8 @@
         margin-left: 26px;
     }
 }
+
+/*This is shown when the user is logged in.*/
+#my-container {
+     display:  none;
+}

@@ -1,106 +1,180 @@
-﻿(function () {
-    "use strict";
+﻿var popularItemsDataSource = popularItemsDataSource || {};
+var channelsDataSource = channelsDataSource || {};
 
+(function () {
+    // Definition of the data adapter
+    var popularItemsDataAdapter = WinJS.Class.define(
+        //constructor
+        function () {
+            
+        },
 
-    var list = new WinJS.Binding.List();
-    var groups = [];
-    var colors = ['rgba(209, 211, 212, 1)', 'rgba(147, 149, 152, 1)', 'rgba(65, 64, 66, 1)'];
+        // Data Adapter interface methods
+        // These define the contract between the virtualized datasource and the data adapter.
+        // These methods will be called by virtualized datasource to fetch items, count etc.
+        {
 
-    function getPopular() {
-        return WPJS.Consumer.apiXhr("/restapi/Product/Browse", "GET").then(
-            function (result) { loadResultJson(result, list); },
-            function (result) { console.log("Error: " + result.status); }
-        );
-    }
+            //TODO:implement
+            getCount: function () {
+                var that = this;
+                return 10;
+            },
 
-    function loadResultJson(result, appendToList) {
-        console.log(result);
-        var results = $.parseJSON(result.response);
+            // Called by the virtualized datasource to fetch items
+            // It will request a specific item and hints for a number of items either side of it
+            // The implementation should return the specific item, and can choose how many either side
+            // to also send back. It can be more or less than those requested.
+            //
+            // Must return back an object containing fields:
+            //   items: The array of items of the form items=[{ key: key1, data : { field1: value, field2: value, ... }}, { key: key2, data : {...}}, ...];
+            //   offset: The offset into the array for the requested item
+            //   totalCount: (optional) update the value of the count
+            itemsFromIndex: function (requestIndex, countBefore, countAfter) {
+                var that = this;
+
+                return WPJS.Consumer.apiXhr("/restapi/Product/Browse", "GET").then(
+                    //success
+                    function (result) {
+                        WPJS.Debug("Received results from popular products.");
+                        var results = that._parseResultJson(result);
+                        return {
+                            items: results, // The array of items
+                            offset: requestIndex, //requestIndex - fetchIndex, // The offset into the array for the requested item
+                            totalCount: 1000, //Math.min(count, that._maxCount), // Total count of records, bing will only return 1000 so we cap the value
+                        };
+                    },
+                    //fail
+                    function (result) {
+                        WPJS.Debug("Error from popular products: " + result.status);
+                        return WinJS.UI.FetchError.noResponse;
+                    }
+                );
+            },
         
+            // Data adapter results needs an array of items of the shape:
+            // items =[{ key: key1, data : { field1: value, field2: value, ... }}, { key: key2, data : {...}}, ...];
+            // Form the array of results objects
+            _parseResultJson: function (result) {
+                console.log(result);
+                var results = $.parseJSON(result.response);
+                var list = [];
  
-        $.each(results.Results, function (i, prod) {
-            var p = {};
-            p.categoryId = prod.CategoryId;
+                $.each(results.Results, function (i, prod) {
+                    var p = {};
+                    p.categoryId = prod.CategoryId;
 
-            var currGroup = null;
-            if (p.categoryId != null) {
-                if (groups[p.categoryId] == null) {
-                    groups[p.categoryId] = {
-                        key: p.categoryId,
-                        title: WPJS.Categories()[p.categoryId],
-                        backgroundColor: colors[i % colors.length]
-                    };
-                    //WPJS.Debug("Added category to list: " + p.categoryId + " (" + WPJS.Categories()[p.categoryId] + ")");
-                }
-                else {
-                    //WPJS.Debug("Category already present: " + p.categoryId);
-                }
-                currGroup = groups[p.categoryId];
-                p.group = currGroup;
+                    if (prod.ProductPicture == null) {
+                        //don't allow picture-less items
+                        return true;
+                    }else{
+                        p.picture = (prod.ProductPicture.CalculatedUrl1 == null) ? prod.ProductPicture.CalculatedUrl0 : prod.ProductPicture.CalculatedUrl1;
+                        p.largePic = (prod.ProductPicture.CalculatedUrl2 == null) ? p.pic : prod.ProductPicture.CalculatedUrl2;
+                    }
+
+                    p.id = prod.Id;
+                    p.brand = prod.Brand;
+                    p.title = prod.Title;
+                    p.key = prod.Id;
+                    p.description = prod.Description;
+                    p.url = prod.RedirectUrl;
+                    var tp = prod.DisplayPrice;
+                    var tp = isNaN(tp) || tp === '' || tp === null ? 0.00 : tp;
+                    p.price = parseFloat(tp).toFixed(2);
+
+                    list.push({
+                        key: p.id.toString(),
+                        data: p
+                    });
+                });
+
+                return list;
             }
-            else {
-                //don't load the item, since there's no group for it
-                return true;
+        }       
+    
+    );
+
+
+    var channelsDataAdapter = WinJS.Class.define(
+        //constructor
+        function () {
+
+        },
+
+        // Data Adapter interface methods
+        // These define the contract between the virtualized datasource and the data adapter.
+        // These methods will be called by virtualized datasource to fetch items, count etc.
+        {
+
+            //TODO:implement
+            getCount: function () {
+                var that = this;
+                return 10;
+            },
+
+            // Called by the virtualized datasource to fetch items
+            // It will request a specific item and hints for a number of items either side of it
+            // The implementation should return the specific item, and can choose how many either side
+            // to also send back. It can be more or less than those requested.
+            //
+            // Must return back an object containing fields:
+            //   items: The array of items of the form items=[{ key: key1, data : { field1: value, field2: value, ... }}, { key: key2, data : {...}}, ...];
+            //   offset: The offset into the array for the requested item
+            //   totalCount: (optional) update the value of the count
+            itemsFromIndex: function (requestIndex, countBefore, countAfter) {
+                var that = this;
+
+                return WPJS.Consumer.apiXhr("/restapi/Channel", "GET").then(
+                    //success
+                    function (result) {
+                        WPJS.Debug("Received results from channels.");
+                        var results = that._parseResultJson(result);
+                        return {
+                            items: results, // The array of items
+                            offset: requestIndex, //requestIndex - fetchIndex, // The offset into the array for the requested item
+                            totalCount: results.length, //Math.min(count, that._maxCount), // Total count of records, bing will only return 1000 so we cap the value
+                        };
+                    },
+                    //fail
+                    function (result) {
+                        WPJS.Debug("Error from channels: " + result.status);
+                        return WinJS.UI.FetchError.noResponse;
+                    }
+                );
+            },
+
+            // Data adapter results needs an array of items of the shape:
+            // items =[{ key: key1, data : { field1: value, field2: value, ... }}, { key: key2, data : {...}}, ...];
+            // Form the array of results objects
+            _parseResultJson: function (result) {
+                console.log(result);
+                var results = $.parseJSON(result.response);
+                var list = [];
+
+                $.each(results.Channels, function (i, cat) {
+                    var c = {};
+                    c.channelType = cat.ChannelType;
+                    c.name = cat.Name;
+
+                    list.push({
+                        key: c.channelType.toString(),
+                        data: c
+                    });
+                });
+
+                return list;
             }
+        }
 
-            if (prod.ProductPicture == null) {
-                //don't allow picture-less items
-                return true;
-            }else{
-                p.picture = (prod.ProductPicture.CalculatedUrl1 == null) ? prod.ProductPicture.CalculatedUrl0 : prod.ProductPicture.CalculatedUrl1;
-                p.largePic = (prod.ProductPicture.CalculatedUrl2 == null) ? p.pic : prod.ProductPicture.CalculatedUrl2;
-            }
-
-            p.brand = prod.Brand;
-            p.title = prod.Title;
-            p.key = prod.Id;
-            p.description = prod.Description;
-            p.url = prod.RedirectUrl;
-            var tp = prod.DisplayPrice;
-            var tp = isNaN(tp) || tp === '' || tp === null ? 0.00 : tp;
-            p.price = parseFloat(tp).toFixed(2);
-
-            appendToList.push(p);
-        });
-
-    }
-
-    function groupKeySelector(item) {
-        return item.group.key;
-    }
-
-    function groupDataSelector(item) {
-        return item.group;
-    }
-
-    // This function returns a WinJS.Binding.List containing only the items
-    // that belong to the provided group.
-    function getItemsFromGroup(group) {
-        return list.createFiltered(function (item) { return item.group.key === group.key; });
-    }
-
-    // This function returns a WinJS.Binding.List containing only the items
-    // that belong to the provided group.
-    function getItemsFromGroup(group) {
-        return list.createFiltered(function (item) { return item.categoryId === group.key; });
-    }
-
-    // Returns the group key that an item belongs to.
-    function getCategoryGroupKey(item) {
-        return item.group.key;
-    }
+    );
 
 
-    // TODO: Replace the data with your real data.
-    // You can add data from asynchronous sources whenever it becomes available.
-    getPopular();
-    var groupedItems = list.createGrouped(groupKeySelector, groupDataSelector);;
-
-    WinJS.Namespace.define("popularProducts", {
-        items: groupedItems,
-        groups: groupedItems.groups,
-        getItemsFromGroup: getItemsFromGroup,
-        groupKeySelector: groupKeySelector,
-
+    //Export the data sources
+    popularItemsDataSource = WinJS.Class.derive(WinJS.UI.VirtualizedDataSource, function () {
+        this._baseDataSourceConstructor(new popularItemsDataAdapter());
     });
+
+    channelsDataSource = WinJS.Class.derive(WinJS.UI.VirtualizedDataSource, function () {
+        this._baseDataSourceConstructor(new channelsDataAdapter());
+    });
+
 })();

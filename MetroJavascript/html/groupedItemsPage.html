@@ -17,13 +17,18 @@
 </head>
 <body>
     <!-- These templates are used to display each item in the ListView declared below. -->
-    <div class="headerTemplate" data-win-control="WinJS.Binding.Template">
-        <h2 class="group-title" data-win-bind="onclick: click; textContent: title" role="link"></h2>
-    </div>
-    <div class="itemtemplate" data-win-control="WinJS.Binding.Template">
+    <div class="productTemplate" data-win-control="WinJS.Binding.Template">
         <img class="item-image" src="#" data-win-bind="src: picture; alt: title" />
         <div class="item-overlay">
             <h4 class="item-title" data-win-bind="textContent: title"></h4>
+            <h6 class="item-subtitle win-type-ellipsis" data-win-bind="textContent: description"></h6>
+        </div>
+    </div>
+
+    <div class="channelTemplate" data-win-control="WinJS.Binding.Template">
+        <img class="item-image" src="#" data-win-bind="src: picture; alt: name" />
+        <div class="item-overlay">
+            <h4 class="item-title" data-win-bind="textContent: name"></h4>
             <h6 class="item-subtitle win-type-ellipsis" data-win-bind="textContent: description"></h6>
         </div>
     </div>
@@ -37,7 +42,28 @@
             </h1>
         </header>
         <section aria-label="Main content" role="main">
-            <div class="groupeditemslist" aria-label="List of groups" data-win-control="WinJS.UI.ListView" data-win-options="{ selectionMode: 'none' }"></div>
+            <div class="groupeditemslist win-groups" aria-label="List of groups" data-win-options="{ selectionMode: 'none' }">
+           
+                <div id="my-container">
+                    <h2 class="group-title" role="link">My Wishpot</h2>
+                    <div id="my" class="groupeditemslist" aria-label="List of groups" data-win-control="WinJS.UI.ListView" data-win-options="{ selectionMode: 'none' }"></div>
+                </div>
+
+                <div>
+                    <h2 class="group-title" role="link">Shopping Channels</h2>
+                    <div id="channel" aria-label="List of groups" data-win-control="WinJS.UI.ListView" data-win-options="{ selectionMode: 'none' }"></div>
+                </div>
+            
+                <div>
+                    <h2 class="group-title" role="link">Popular Products</h2>
+                    <div id="popular" aria-label="List of groups" data-win-control="WinJS.UI.ListView" data-win-options="{ selectionMode: 'none' }"></div>
+                </div>
+            
+                <div>
+                    <h2 class="group-title" role="link">Wishpot Community</h2>
+                    <div id="community" aria-label="List of groups" data-win-control="WinJS.UI.ListView" data-win-options="{ selectionMode: 'none' }"></div>
+                </div>
+            </div>
         </section>
     </div>
 </body>
