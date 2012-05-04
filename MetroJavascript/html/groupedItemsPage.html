@@ -18,7 +18,7 @@
 <body>
     <!-- These templates are used to display each item in the ListView declared below. -->
     <div class="productTemplate" data-win-control="WinJS.Binding.Template">
-        <img class="item-image" src="#" data-win-bind="src: picture; alt: title" />
+        <img class="item-image" src="#" data-win-bind="src: picture.tilePicture; alt: title" />
         <div class="item-overlay">
             <h4 class="item-title" data-win-bind="textContent: title"></h4>
             <h6 class="item-subtitle win-type-ellipsis" data-win-bind="textContent: description"></h6>
@@ -26,10 +26,18 @@
     </div>
 
     <div class="channelTemplate" data-win-control="WinJS.Binding.Template">
-        <img class="item-image" src="#" data-win-bind="src: picture; alt: name" />
+        <img class="item-image" src="#" data-win-bind="src: picture.tilePicture; alt: name" />
         <div class="item-overlay">
             <h4 class="item-title" data-win-bind="textContent: name"></h4>
             <h6 class="item-subtitle win-type-ellipsis" data-win-bind="textContent: description"></h6>
+        </div>
+    </div>
+
+    <div class="userTemplate" data-win-control="WinJS.Binding.Template">
+        <img class="item-image" src="#" data-win-bind="src: picture.tilePicture; alt: name" />
+        <div class="item-overlay">
+            <h4 class="item-title" data-win-bind="textContent: screenName"></h4>
+            <h6 class="item-subtitle win-type-ellipsis" data-win-bind="textContent: headline"></h6>
         </div>
     </div>
 

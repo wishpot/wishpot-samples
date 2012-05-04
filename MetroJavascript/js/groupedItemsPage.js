@@ -90,7 +90,17 @@
                 layout: new ui.ListLayout()
             });
 
+            var communityView = element.querySelector("#community").winControl;
+            var communityDataSource = new expertsDataSource();
 
+
+            ui.setOptions(communityView, {
+                groupHeaderTemplate: element.querySelector(".headerTemplate"),
+                itemTemplate: element.querySelector(".userTemplate"),
+                oniteminvoked: this.productInvoked.bind(this),
+                itemDataSource: communityDataSource,
+                layout: new ui.ListLayout()
+            });
 
             
 
