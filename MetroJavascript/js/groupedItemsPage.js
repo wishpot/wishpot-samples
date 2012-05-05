@@ -69,11 +69,9 @@
             var channelDataSource = new channelsDataSource();
 
             ui.setOptions(channelView, {
-                groupHeaderTemplate: element.querySelector(".headerTemplate"),
                 itemTemplate: element.querySelector(".channelTemplate"),
                 oniteminvoked: this.channelInvoked.bind(this),
-                itemDataSource: channelDataSource,
-                layout: new ui.ListLayout()
+                itemDataSource: channelDataSource
             });
 
             var popularView = element.querySelector("#popular").winControl;
@@ -81,13 +79,9 @@
 
 
             ui.setOptions(popularView, {
-                groupHeaderTemplate: element.querySelector(".headerTemplate"),
                 itemTemplate: element.querySelector(".productTemplate"),
                 oniteminvoked: this.productInvoked.bind(this),
-                itemDataSource: popularDataSource,
-                //groupDataSource: popularDataSource.createGrouped(function (item) { return groups[2].key; },
-                //                                                 function (item) { return groups[2]; }),
-                layout: new ui.ListLayout()
+                itemDataSource: popularDataSource
             });
 
             var communityView = element.querySelector("#community").winControl;
@@ -95,14 +89,11 @@
 
 
             ui.setOptions(communityView, {
-                groupHeaderTemplate: element.querySelector(".headerTemplate"),
                 itemTemplate: element.querySelector(".userTemplate"),
                 oniteminvoked: this.productInvoked.bind(this),
-                itemDataSource: communityDataSource,
-                layout: new ui.ListLayout()
+                itemDataSource: communityDataSource
             });
 
-            
 
             this.updateLayout(element, appView.value);
         },

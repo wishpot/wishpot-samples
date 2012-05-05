@@ -132,3 +132,12 @@
 #my-container {
      display:  none;
 }
+
+.hubgroup {
+    width: 560px;
+    float: left;
+}
+
+    .hubgroup .win-listview {
+        height: 870px;
+    }
