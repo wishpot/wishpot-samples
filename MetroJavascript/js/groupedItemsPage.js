@@ -39,12 +39,16 @@
         productInvoked: function (eventObject) {
             if (appView.value === appViewState.snapped) {
                 // If the page is snapped, the user invoked a group.
-                var group = popularProducts.groups.getAt(eventObject.detail.itemIndex);
-                nav.navigate("/html/groupDetailPage.html", { group: group });
+                eventObject.detail.itemPromise.then(function (invokedItem) {
+                    // Access item data from the itemPromise
+                    nav.navigate("/html/groupDetailPage.html", { group: invokedItem.data });
+                });
             } else {
                 // If the page is not snapped, the user invoked an item.
-                var item = popularProducts.items.getAt(eventObject.detail.itemIndex);
-                nav.navigate("/html/itemDetailPage.html", { item: item });
+                eventObject.detail.itemPromise.then(function (invokedItem) {
+                    // Access item data from the itemPromise
+                    nav.navigate("/html/itemDetailPage.html", { item: invokedItem.data });
+                });
             }
         },
 
