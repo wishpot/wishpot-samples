@@ -15,23 +15,12 @@
 
     ui.Pages.define("/html/groupedItemsPage.html", {
 
-        // This function is used in updateLayout to select the data to display
-        // from an item's group.
-        groupDataSelector: function (item) {
-            return {
-                title: item.group.title,
-                click: function () {
-                    nav.navigate("/html/groupDetailPage.html", { group: item.group });
-                }
-            }
-        },
-
         productInvoked: function (eventObject) {
             if (appView.value === appViewState.snapped) {
                 // If the page is snapped, the user invoked a group.
                 eventObject.detail.itemPromise.then(function (invokedItem) {
                     // Access item data from the itemPromise
-                    nav.navigate("/html/groupDetailPage.html", { group: invokedItem.data });
+                    nav.navigate("/html/productCollection.html", { group: invokedItem.data });
                 });
             } else {
                 // If the page is not snapped, the user invoked an item.
@@ -45,8 +34,10 @@
 
         channelInvoked: function (eventObject) {
             eventObject.detail.itemPromise.then(function (invokedItem) {
-                // Access item data from the itemPromise
-                nav.navigate("/html/groupDetailPage.html", { item: invokedItem.data });
+                var item = invokedItem.data;
+                item.group_title = item.name;
+                item.dataSource = new popularInChannelDataSource(item.channelType);
+                nav.navigate("/html/productCollection.html", { item: item });
             });
         },
 
@@ -88,25 +79,6 @@
             this.updateLayout(element, appView.value);
         },
 
-        /*
-        onPopularLoaded: function(element, data)
-        {
-            var listView = element.querySelector("#popular").winControl;
-            var groupedItems = data.createGrouped(function (item) { return groups[2].key; },
-                                                  function (item) { return groups[2]; });
-
-
-            ui.setOptions(listView, {
-                groupHeaderTemplate: element.querySelector(".headerTemplate"),
-                itemTemplate: element.querySelector(".itemtemplate"),
-                oniteminvoked: this.itemInvoked.bind(this),
-                itemDataSource: groupedItems.dataSource,
-                groupDataSource: groupedItems.groups.dataSource,
-                layout: new ui.ListLayout()
-            });
-
-        },
-        */
 
         updateLayout: function(viewElement, viewState)
         {

@@ -1,9 +1,6 @@
-﻿var popularItemsDataSource = popularItemsDataSource || {};
-var channelsDataSource = channelsDataSource || {};
-var expertsDataSource = expertsDataSource || {};
-
-//Datasource for an individual channel's items
-var channelDataSource = channelDataSource || {};
+﻿//var popularItemsDataSource = popularItemsDataSource || {};
+//var channelsDataSource = channelsDataSource || {};
+//var expertsDataSource = expertsDataSource || {};
 
 (function () {
 
@@ -35,15 +32,19 @@ var channelDataSource = channelDataSource || {};
 
     // Definition of the data adapter
     var popularItemsDataAdapter = WinJS.Class.define(
-        //constructor
-        function () {
-            
+
+        /*
+            Constructor: All fields optional, but will scope the ultimate databinding
+        */
+        function (channel) {
+            _channel = channel;
         },
 
         // Data Adapter interface methods
         // These define the contract between the virtualized datasource and the data adapter.
         // These methods will be called by virtualized datasource to fetch items, count etc.
         {
+            _channel: null,
 
             //TODO:implement
             getCount: function () {
@@ -63,7 +64,11 @@ var channelDataSource = channelDataSource || {};
             itemsFromIndex: function (requestIndex, countBefore, countAfter) {
                 var that = this;
 
-                return WPJS.Consumer.apiXhr("/restapi/Product/Browse", "GET").then(
+                var params = [];
+                if (_channel)
+                    params.push(["Channel", _channel]);
+
+                return WPJS.Consumer.apiXhr("/restapi/Product/Browse", "GET", params).then(
                     //success
                     function (result) {
                         WPJS.Debug("Received results from popular products.");
@@ -210,6 +215,8 @@ var channelDataSource = channelDataSource || {};
 
             _cachedResults: null,
 
+            _resultLimit: 8,
+
             //TODO:implement
             getCount: function () {
                 var that = this;
@@ -234,7 +241,7 @@ var channelDataSource = channelDataSource || {};
                 if (that._cachedResults != null)
                     return new WinJS.Promise(function () { return that._cachedResults; });
 
-                return WPJS.Consumer.apiXhr("/restapi/User/Experts?Limit=10", "GET").then(
+                return WPJS.Consumer.apiXhr("/restapi/User/Experts?Limit="+that._resultLimit, "GET").then(
                     //success
                     function (result) {
                         WPJS.Debug("Received results from experts.");
@@ -288,6 +295,10 @@ var channelDataSource = channelDataSource || {};
     //Export the data sources
     popularItemsDataSource = WinJS.Class.derive(WinJS.UI.VirtualizedDataSource, function () {
         this._baseDataSourceConstructor(new popularItemsDataAdapter());
+    });
+
+    popularInChannelDataSource = WinJS.Class.derive(WinJS.UI.VirtualizedDataSource, function (channel) {
+        this._baseDataSourceConstructor(new popularItemsDataAdapter(channel));
     });
 
     channelsDataSource = WinJS.Class.derive(WinJS.UI.VirtualizedDataSource, function () {

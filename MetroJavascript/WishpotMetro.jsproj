@@ -52,11 +52,11 @@
       <SubType>Designer</SubType>
     </AppxManifest>
     <Content Include="default.html" />
-    <Content Include="css\groupDetailPage.css" />
+    <Content Include="css\productCollection.css" />
     <Content Include="css\default.css" />
     <Content Include="css\itemDetailPage.css" />
     <Content Include="css\groupedItemsPage.css" />
-    <Content Include="html\groupDetailPage.html" />
+    <Content Include="html\productCollection.html" />
     <Content Include="html\itemDetailPage.html" />
     <Content Include="html\groupedItemsPage.html" />
     <Content Include="html\search.css" />
@@ -72,7 +72,7 @@
     <Content Include="js\external\jquery-1.7.1.min.js" />
     <Content Include="js\external\oauth.js" />
     <Content Include="js\external\sha1.js" />
-    <Content Include="js\groupDetailPage.js" />
+    <Content Include="js\productCollection.js" />
     <Content Include="js\default.js" />
     <Content Include="js\navigator.js" />
     <Content Include="js\data.js" />

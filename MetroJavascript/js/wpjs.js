@@ -52,10 +52,11 @@ var WPJS = {
             return OAuth.addToURL(message.action, message.parameters);
         },
 
-        //Returns an WinJS.xhr object calling the given method.
+        //Returns an WinJS.xhr object calling the given method.  Params shuld be an array of arrays, where each internal array has two values.
         apiXhr: function (apiPath, method, params) {
             var message = WPJS.Consumer.generateBaseConsumerMessage(apiPath, method, params);
             var url = WPJS.Consumer.generateFinalUrl(message);
+            WPJS.Debug(url);
             return WinJS.xhr({ url: url, type: message.method, headers: { "Accept": "application/json" } });
         }
     },
