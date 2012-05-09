@@ -11,15 +11,10 @@
         // This function is called whenever a user navigates to this page. It
         // populates the page elements with the app's data.
         ready: function (element, options) {
-            group = (options && options.group) ? options.group : data.groups.getAt(0);
-            items = data.getItemsFromGroup(group);
-            var pageList = items.createGrouped(
-            function (item) { return group.key; },
-            function (item) { return group; }
-            );
-            var groupDataSource = pageList.groups.dataSource;
+            group = options.item;
+          
 
-            element.querySelector("header[role=banner] .pagetitle").textContent = group.title;
+            element.querySelector("header[role=banner] .pagetitle").textContent = group.group_title;
 
             var listView = element.querySelector(".grouplist").winControl;
             ui.setOptions(listView, {
@@ -44,8 +39,11 @@
         },
 
         itemInvoked: function (eventObject) {
-            var item = items.getAt(eventObject.detail.itemIndex);
-            nav.navigate("/html/itemDetailPage.html", { item: item });
+            eventObject.detail.itemPromise.then(function (invokedItem) {
+
+                invokedItem.data.group_title = group.group_title;
+                nav.navigate("/html/itemDetailPage.html", { item: invokedItem.data });
+            });
         }
     });
 })();

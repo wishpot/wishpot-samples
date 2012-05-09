@@ -2,6 +2,9 @@
 var channelsDataSource = channelsDataSource || {};
 var expertsDataSource = expertsDataSource || {};
 
+//Datasource for an individual channel's items
+var channelDataSource = channelDataSource || {};
+
 (function () {
 
     function parsePhotoJson(json) {
@@ -205,10 +208,15 @@ var expertsDataSource = expertsDataSource || {};
         // These methods will be called by virtualized datasource to fetch items, count etc.
         {
 
+            _cachedResults: null,
+
             //TODO:implement
             getCount: function () {
                 var that = this;
-                return 10;
+                return 4;
+                return that.itemsFromIndex(0, 0, 0).then(function (r) {
+                    return r.totalCount
+                });
             },
 
             // Called by the virtualized datasource to fetch items
@@ -223,16 +231,21 @@ var expertsDataSource = expertsDataSource || {};
             itemsFromIndex: function (requestIndex, countBefore, countAfter) {
                 var that = this;
 
+                if (that._cachedResults != null)
+                    return new WinJS.Promise(function () { return that._cachedResults; });
+
                 return WPJS.Consumer.apiXhr("/restapi/User/Experts?Limit=10", "GET").then(
                     //success
                     function (result) {
                         WPJS.Debug("Received results from experts.");
                         var results = that._parseResultJson(result);
-                        return {
+                        //TODO: BUGBUG - we only cache one set of results, regardless of params
+                        that._cachedResults = {
                             items: results, // The array of items
                             offset: requestIndex, //requestIndex - fetchIndex, // The offset into the array for the requested item
                             totalCount: results.length, //Math.min(count, that._maxCount), // Total count of records, bing will only return 1000 so we cap the value
                         };
+                        return that._cachedResults;
                     },
                     //fail
                     function (result) {
@@ -260,7 +273,7 @@ var expertsDataSource = expertsDataSource || {};
                     u.picture = parsePhotoJson(user.UserPicture);
 
                     list.push({
-                        key: u.id.toString(),
+                        key: "user_"+u.id.toString(),
                         data: u
                     });
                 });

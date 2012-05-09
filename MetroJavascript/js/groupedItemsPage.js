@@ -11,17 +11,7 @@
     // backgroundImage property in your real data to be URLs to images.
     var lightGray = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXY7h4+cp/AAhpA3h+ANDKAAAAAElFTkSuQmCC";
     var mediumGray = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXY5g8dcZ/AAY/AsAlWFQ+AAAAAElFTkSuQmCC";
-    var darkGray = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXY3B0cPoPAANMAcOba1BlAAAAAElFTkSuQmCC";
-
-    // Each of these sample groups must have a unique key to be displayed
-    // separately.
-    var groups = [
-        { key: "group1", title: "Group Title: 1", subtitle: "Group Subtitle: 1", backgroundImage: darkGray, description: "desc" },
-        { key: "group2", title: "Group Title: 2", subtitle: "Group Subtitle: 2", backgroundImage: lightGray, description: "desc" },
-        { key: "group3", title: "Popular Items", subtitle: "Group Subtitle: 3", backgroundImage: mediumGray, description: "desc" },
-        { key: "group4", title: "Group Title: 4", subtitle: "Group Subtitle: 4", backgroundImage: lightGray, description: "desc" }
-    ];
-  
+    var darkGray = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXY3B0cPoPAANMAcOba1BlAAAAAElFTkSuQmCC";  
 
     ui.Pages.define("/html/groupedItemsPage.html", {
 
@@ -47,21 +37,17 @@
                 // If the page is not snapped, the user invoked an item.
                 eventObject.detail.itemPromise.then(function (invokedItem) {
                     // Access item data from the itemPromise
+                    invokedItem.data.group_title = "Popular Items";
                     nav.navigate("/html/itemDetailPage.html", { item: invokedItem.data });
                 });
             }
         },
 
         channelInvoked: function (eventObject) {
-            if (appView.value === appViewState.snapped) {
-                // If the page is snapped, the user invoked a group.
-                var group = popularProducts.groups.getAt(eventObject.detail.itemIndex);
-                nav.navigate("/html/groupDetailPage.html", { group: group });
-            } else {
-                // If the page is not snapped, the user invoked an item.
-                var item = popularProducts.items.getAt(eventObject.detail.itemIndex);
-                nav.navigate("/html/itemDetailPage.html", { item: item });
-            }
+            eventObject.detail.itemPromise.then(function (invokedItem) {
+                // Access item data from the itemPromise
+                nav.navigate("/html/groupDetailPage.html", { item: invokedItem.data });
+            });
         },
 
         // This function is called whenever a user navigates to this page. It
