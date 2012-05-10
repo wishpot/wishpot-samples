@@ -133,9 +133,14 @@
      display:  none;
 }
 
+.groupeditemspage .groupeditemslist .group-title {
+    padding-left:  48px;
+}
+
 .hubgroup {
-    width: 560px;
+    width: 565px;
     float: left;
+    overflow: hidden;
 }
 
     .hubgroup .win-listview {
