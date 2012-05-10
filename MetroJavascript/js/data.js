@@ -50,7 +50,7 @@
             //TODO:implement
             getCount: function () {
                 var that = this;
-                return 10;
+                return that._pageSize;
             },
 
             // Called by the virtualized datasource to fetch items
