@@ -5,14 +5,21 @@
     <title>groupDetailPage</title>
 
     <!-- WinJS references -->
-    <link href="//Microsoft.WinJS.0.6/css/ui-dark.css" rel="stylesheet">
+    <link href="//Microsoft.WinJS.0.6/css/ui-light.css" rel="stylesheet">
     <script src="//Microsoft.WinJS.0.6/js/base.js"></script>
     <script src="//Microsoft.WinJS.0.6/js/ui.js"></script>
 
     <link href="/css/default.css" rel="stylesheet">
-    <link href="/css/productCollection.css" rel="stylesheet">
     <script src="/js/data.js"></script>
     <script src="/js/productCollection.js"></script>
+    <style type="text/css">
+        .productlist {
+            height: 100%;
+            position: relative;
+            width: 100%;
+            z-index: 0;
+        }
+    </style>
 </head>
 <body>
     <!-- These templates are used to display each item in the ListView declared below. -->
@@ -21,17 +28,19 @@
         <img class="group-image" src="#" data-win-bind="src: backgroundImage; alt: title" />
         <h4 class="group-description" data-win-bind="innerHTML: description"></h4>
     </div>
+    <div class="introTemplate" data-win-control="WinJS.Binding.Template">
+       
+    </div>
     <div class="itemtemplate" data-win-control="WinJS.Binding.Template">
-        <img class="item-image" src="#" data-win-bind="src: backgroundImage; alt: title" />
-        <div class="item-info">
+        <img class="item-image" src="#" data-win-bind="src: picture.tilePicture; alt: title" />
+        <div class="item-overlay">
             <h4 class="item-title" data-win-bind="textContent: title"></h4>
-            <h6 class="item-subtitle win-type-ellipsis" data-win-bind="textContent: subtitle"></h6>
-            <h4 class="item-description" data-win-bind="textContent: description"></h4>
+            <h6 class="item-subtitle win-type-ellipsis" data-win-bind="textContent: description"></h6>
         </div>
     </div>
 
     <!-- The content that will be loaded and displayed. -->
-    <div class="groupdetailpage fragment">
+    <div class="fragment">
         <header aria-label="Header content" role="banner">
             <button class="win-backbutton" aria-label="Back" disabled></button>
             <h1 class="titlearea win-type-ellipsis">
@@ -39,7 +48,8 @@
             </h1>
         </header>
         <section aria-label="Main content" role="main">
-            <div class="grouplist" aria-label="List of this group's items" data-win-control="WinJS.UI.ListView" data-win-options="{ selectionMode: 'none' }"></div>
+            <div class="introPanel"></div>
+            <div class="productlist" aria-label="List of this group's items" data-win-control="WinJS.UI.ListView" data-win-options="{ selectionMode: 'none' }"></div>
         </section>
     </div>
 </body>

@@ -14,7 +14,7 @@
             group = options.item;
             element.querySelector("header[role=banner] .pagetitle").textContent = group.group_title;
 
-            var listView = element.querySelector(".grouplist").winControl;
+            var listView = element.querySelector(".productlist").winControl;
             ui.setOptions(listView, {
                 itemDataSource: group.dataSource,
                 itemTemplate: element.querySelector(".itemtemplate"),
@@ -27,7 +27,7 @@
 
         // This function updates the page layout in response to viewState changes.
         updateLayout: function (element, viewState) {
-            var listView = element.querySelector(".grouplist").winControl;
+            var listView = element.querySelector(".productlist").winControl;
 
             if (viewState === Windows.UI.ViewManagement.ApplicationViewState.snapped) {
                 listView.layout = new ui.ListLayout();

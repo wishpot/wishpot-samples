@@ -52,7 +52,6 @@
       <SubType>Designer</SubType>
     </AppxManifest>
     <Content Include="default.html" />
-    <Content Include="css\productCollection.css" />
     <Content Include="css\default.css" />
     <Content Include="css\itemDetailPage.css" />
     <Content Include="css\groupedItemsPage.css" />
@@ -61,6 +60,7 @@
     <Content Include="html\groupedItemsPage.html" />
     <Content Include="html\search.css" />
     <Content Include="html\search.html" />
+    <Content Include="images\background_body.gif" />
     <Content Include="images\logo.png" />
     <Content Include="images\smalllogo.png" />
     <Content Include="images\splashscreen.png" />

@@ -45,6 +45,7 @@
         // These methods will be called by virtualized datasource to fetch items, count etc.
         {
             _channel: null,
+            _pageSize: 25, //this matches the default on the server
 
             //TODO:implement
             getCount: function () {
@@ -68,6 +69,12 @@
                 if (_channel)
                     params.push(["Channel", _channel]);
 
+                var firstItemPos = requestIndex + countBefore;
+                var pg = Math.floor(firstItemPos / that._pageSize)+1;
+
+                params.push(["Pg", pg]);
+                params.push(["Limit", that._pageSize]);
+
                 return WPJS.Consumer.apiXhr("/restapi/Product/Browse", "GET", params).then(
                     //success
                     function (result) {
@@ -75,7 +82,7 @@
                         var results = that._parseResultJson(result);
                         return {
                             items: results, // The array of items
-                            offset: requestIndex, //requestIndex - fetchIndex, // The offset into the array for the requested item
+                            offset: countBefore, //requestIndex - fetchIndex, // The offset into the array for the requested item
                             totalCount: 1000, //Math.min(count, that._maxCount), // Total count of records, bing will only return 1000 so we cap the value
                         };
                     },
