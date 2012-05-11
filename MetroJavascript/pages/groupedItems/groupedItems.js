@@ -26,38 +26,27 @@
             }
         },
 
-        channelInvoked: function (eventObject) {
-            eventObject.detail.itemPromise.then(function (invokedItem) {
-                var item = invokedItem.data;
-                item.group_title = item.name;
-                item.dataSource = new popularInChannelDataSource(item.channelType);
-                nav.navigate("/pages/productCollection/productCollection.html", { item: item });
-            });
-        },
-
         // This function is called whenever a user navigates to this page. It
         // populates the page elements with the app's data.
         ready: function (element, options) {
             var that = this;
 
-            var channelView = element.querySelector("#channel").winControl;
-            var channelDataSource = new channelsDataSource();
-
-            ui.setOptions(channelView, {
-                itemTemplate: element.querySelector(".channelTemplate"),
-                oniteminvoked: this.channelInvoked.bind(this),
-                itemDataSource: channelDataSource
-            });
-
             var popularView = element.querySelector("#popular").winControl;
             var popularDataSource = new popularItemsDataSource();
-
 
             ui.setOptions(popularView, {
                 itemTemplate: element.querySelector(".productTemplate"),
                 oniteminvoked: this.productInvoked.bind(this),
                 itemDataSource: popularDataSource
             });
+
+            element.querySelector('#popular-container .group-title').onclick = function () {
+                var item = {};
+                item.groupTitle = "Popular Items";
+                item.dataSource = new popularItemsDataSource();
+                nav.navigate("/pages/productCollection/productCollection.html", { item: item });
+            }
+
 
             var communityView = element.querySelector("#community").winControl;
             var communityDataSource = new expertsDataSource();

@@ -1,5 +1,4 @@
 ﻿WISHPOT_HOSTNAME = "main.test.wishpot.com"; //"main.test.wishpot.com"; 
-WISHPOT_IMG_ROOT = "//" + WISHPOT_HOSTNAME + "/img/";
 PRODUCT_PORTALS_KEY = "558";
 FACEBOOK_APP_ID = "3003981649"; 
 //FACEBOOK_APP_ID = "2456371452";
@@ -95,11 +94,9 @@ var WPJS = {
         if (null == facebookToken)
             callback(false);
 
-        var message = WPJS.Consumer.generateBaseConsumerMessage("/restapi/User/OAuthCredential/Exchange/2", "POST", [["OAuthCredential.AccessToken", facebookToken]]);
-        var url = WPJS.Consumer.generateFinalUrl(message);
-        WinJS.xhr({ url: url, type: message.method }).then(
+        WPJS.Consumer.apiXhr("/restapi/User/OAuthCredential/Exchange/2", "POST", [["OAuthCredential.AccessToken", facebookToken]]).then(
         function (result) {
-            WPJS._StoreUserToken(result.responseXML, callback);
+            WPJS._StoreUserToken(result.response, callback);
             WPJS._StoreUserLists();
         },
         function (result) {
@@ -108,10 +105,10 @@ var WPJS = {
         });
     },
 
-    _StoreUserToken: function (resultXml, callback) {
-        var token = resultXml.selectNodes("AuthToken");
-        WPJS.Consumer.userKey = WPJS.XML.safeParseXmlText(token[0], "Token", null);
-        WPJS.Consumer.userSecret = WPJS.XML.safeParseXmlText(token[0], "TokenSecret", null);
+    _StoreUserToken: function (resultJson, callback) {
+        var token = $.parseJSON(resultJson);
+        WPJS.Consumer.userKey = token.Token;
+        WPJS.Consumer.userSecret = token.TokenSecret;
         callback(true);
     },
 
@@ -396,33 +393,6 @@ var WPJS = {
     }
 }
 
-/* Simple Product object */
-function Product() {
-
-}
-(function () {
-    
-    /*
-    TODO: build out a real product object... unfortunately curently doesn't work with windows databinding 
-    function setPictures(pics) {
-        this.pictures = pics;
-    }
-    
-    function getSmallPic() {
-        return (this.pictures.length > 0) ? this.pictures[0] : null;
-    }
-   
-    function getLargePic() {
-        return (this.pictures.length > 1) ? this.pictures[1] : this.getSmallPic();
-    }
-
-    Product.prototype = {
-        largePicture: getLargePic,
-        picture: getSmallPic,
-        setPictures: setPictures
-    };
-    */ 
-})();
 
 
 

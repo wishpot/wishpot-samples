@@ -65,6 +65,7 @@
     <Content Include="js\external\jquery-1.7.1.min.js" />
     <Content Include="js\external\oauth.js" />
     <Content Include="js\external\sha1.js" />
+    <Content Include="js\external\wishpot-site.js" />
     <Content Include="js\navigator.js" />
     <Content Include="js\wpjs.js" />
     <Content Include="pages\itemDetail\itemDetail.css" />

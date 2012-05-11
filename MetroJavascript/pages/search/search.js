@@ -4,7 +4,7 @@
 // TODO: Add the following script tag to the start page's head to
 // subscribe to search contract events.
 //  
-// <script src="/html/search.js"></script>
+// <script src="/pages/search/search.js"></script>
 //
 // TODO: Edit the manifest to enable use as a search target.  The package 
 // manifest could not be automatically updated.  Open the package manifest file
@@ -17,7 +17,7 @@
     var nav = WinJS.Navigation;
     var ui = WinJS.UI;
     var utils = WinJS.Utilities;
-    var searchPageURI = "/html/search.html";
+    var searchPageURI = "/pages/search/search.html";
 
     function doProductSearch(term, finalCallback) {
         WinJS.xhr({ url: WPJS.PPConsumer.getSearchUri(term) }).then(
@@ -157,7 +157,7 @@
             document.body.focus();
         },
 
-        // This function colors the search term. Referenced in /html/search.html
+        // This function colors the search term. Referenced in /pages/search/search.html
         // as part of the ListView item templates.
         markText: function(source, sourceProperties, dest, destProperties) {
             var text = source[sourceProperties[0]];

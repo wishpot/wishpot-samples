@@ -12,7 +12,7 @@
         // populates the page elements with the app's data.
         ready: function (element, options) {
             group = options.item;
-            element.querySelector("header[role=banner] .pagetitle").textContent = group.group_title;
+            element.querySelector("header[role=banner] .pagetitle").textContent = group.groupTitle;
 
             var listView = element.querySelector(".productlist").winControl;
             ui.setOptions(listView, {
@@ -38,8 +38,8 @@
 
         itemInvoked: function (eventObject) {
             eventObject.detail.itemPromise.then(function (invokedItem) {
-                invokedItem.data.group_title = group.group_title;
-                nav.navigate("/html/itemDetailPage.html", { item: invokedItem.data });
+                invokedItem.data.groupTitle = group.groupTitle;
+                nav.navigate("/pages/itemDetail/itemDetail.html", { item: invokedItem.data });
             });
         }
     });

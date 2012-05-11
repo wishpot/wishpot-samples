@@ -22,10 +22,25 @@
                 break;
             }
         }
-
         p.tilePicture = (p.url[1] == null) ? p.url[0] : p.url[1];
 
+        return p;
+    }
 
+    function parseProduct(prod) {
+        var p = {};
+        p.categoryId = prod.CategoryId;
+        p.picture = parsePhotoJson(prod.ProductPicture);
+
+        p.id = prod.Id;
+        p.brand = prod.Brand;
+        p.title = prod.Title;
+        p.key = prod.Id;
+        p.description = prod.Description;
+        p.url = prod.RedirectUrl;
+        var tp = prod.DisplayPrice;
+        var tp = isNaN(tp) || tp === '' || tp === null ? 0.00 : tp;
+        p.price = parseFloat(tp).toFixed(2);
         return p;
     }
 
@@ -105,25 +120,11 @@
                 var list = [];
  
                 $.each(results.Results, function (i, prod) {
-                    var p = {};
-                    p.categoryId = prod.CategoryId;
+                    var p = parseProduct(prod);
 
-                    if (prod.ProductPicture == null) {
-                        //don't allow picture-less items
+                    //skip photo-less items
+                    if (p == null || p.picture == null)
                         return true;
-                    } else {
-                        p.picture = parsePhotoJson(prod.ProductPicture);
-                    }
-
-                    p.id = prod.Id;
-                    p.brand = prod.Brand;
-                    p.title = prod.Title;
-                    p.key = prod.Id;
-                    p.description = prod.Description;
-                    p.url = prod.RedirectUrl;
-                    var tp = prod.DisplayPrice;
-                    var tp = isNaN(tp) || tp === '' || tp === null ? 0.00 : tp;
-                    p.price = parseFloat(tp).toFixed(2);
 
                     list.push({
                         key: p.id.toString(),
@@ -248,8 +249,8 @@
             itemsFromIndex: function (requestIndex, countBefore, countAfter) {
                 var that = this;
 
-                if (that._cachedResults != null)
-                    return new WinJS.Promise(function () { return that._cachedResults; });
+                //if (that._cachedResults != null)
+                //   return new WinJS.Promise(function () { return that._cachedResults; });
 
                 return WPJS.Consumer.apiXhr("/restapi/User/Experts?Limit="+that._resultLimit, "GET").then(
                     //success

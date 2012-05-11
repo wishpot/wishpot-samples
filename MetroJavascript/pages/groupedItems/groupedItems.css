@@ -125,9 +125,6 @@
 }
 
 /*This is shown when the user is logged in.*/
-#my-container {
-     display:  none;
-}
 
 .groupeditemspage .groupeditemslist .group-title {
     padding-left:  48px;

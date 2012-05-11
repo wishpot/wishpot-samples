@@ -9,7 +9,7 @@
         // populates the page elements with the app's data.
         ready: function (element, options) {
             var item = options.item;
-            element.querySelector(".titlearea .pagetitle").textContent = item.group_title;
+            element.querySelector(".titlearea .pagetitle").textContent = item.groupTitle;
             element.querySelector("article .item-title").textContent = item.title;
             element.querySelector("article .item-subtitle").textContent = item.brand;
             element.querySelector("article .item-image").src = item.picture.largeImg;

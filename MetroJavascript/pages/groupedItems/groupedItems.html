@@ -24,14 +24,6 @@
         </div>
     </div>
 
-    <div class="channelTemplate" data-win-control="WinJS.Binding.Template">
-        <img class="item-image" src="#" data-win-bind="src: picture.tilePicture; alt: name" />
-        <div class="item-overlay">
-            <h4 class="item-title" data-win-bind="textContent: name"></h4>
-            <h6 class="item-subtitle win-type-ellipsis" data-win-bind="textContent: description"></h6>
-        </div>
-    </div>
-
     <div class="userTemplate" data-win-control="WinJS.Binding.Template">
         <img class="item-image" src="#" data-win-bind="src: picture.tilePicture; alt: name" />
         <div class="item-overlay">
@@ -52,28 +44,24 @@
         <section aria-label="Main content" role="main">
             <div class="groupeditemslist win-groups" aria-label="List of groups" data-win-options="{ selectionMode: 'none' }">
            
-                <div id="my-container">
+                <div id="my-container" class="hubgroup">
                     <h2 class="group-title" role="link">My Wishpot</h2>
+                    <div id="my-notloggedin">
+                        <a onclick="WPJS.EnsureAuth(function (result) {/*updateLayout();*/});">Sign in</a> to see your wishes.
+                    </div>
                     <div id="my" aria-label="List of groups" 
                         data-win-control="WinJS.UI.ListView" 
                         data-win-options="{ selectionMode: 'none' }"></div>
                 </div>
-
-                <div class="hubgroup">
-                    <h2 class="group-title" role="link">Shopping Channels</h2>
-                    <div id="channel" aria-label="List of groups" 
-                        data-win-control="WinJS.UI.ListView" 
-                        data-win-options="{ layout: {type: WinJS.UI.GridLayout, maxRows: 3}, selectionMode: 'none' }"></div>
-                </div>
             
-                <div class="hubgroup">
+                <div id="popular-container" class="hubgroup">
                     <h2 class="group-title" role="link">Popular Products</h2>
                     <div id="popular" class="productlist" aria-label="List of groups" 
                         data-win-control="WinJS.UI.ListView" 
                         data-win-options="{ layout: {type: WinJS.UI.GridLayout, maxRows: 3},selectionMode: 'none' }"></div>
                 </div>
             
-                <div class="hubgroup">
+                <div id="community-container" class="hubgroup">
                     <h2 class="group-title" role="link">Wishpot Community</h2>
                     <div id="community" aria-label="List of groups" 
                         data-win-control="WinJS.UI.ListView" 
