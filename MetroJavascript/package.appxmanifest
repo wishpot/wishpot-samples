@@ -1,27 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
-  <Identity Name="26579291-003f-436d-83ee-2cda042fb388" Version="1.0.0.0" Publisher="CN=tlianza" />
+  <Identity Name="50aa9a9a-a54e-4392-8cdf-4dda616f3d74" Version="1.0.0.0" Publisher="CN=tlianza" />
   <Properties>
-    <DisplayName>WishpotMetro</DisplayName>
-    <Description>WishpotMetro</Description>
-    <PublisherDisplayName>Wishpot, Inc</PublisherDisplayName>
+    <DisplayName>MetroJavascript</DisplayName>
+    <PublisherDisplayName>tlianza</PublisherDisplayName>
     <Logo>images\storelogo.png</Logo>
   </Properties>
   <Prerequisites>
-    <OSMinVersion>6.2</OSMinVersion>
-    <OSMaxVersionTested>6.2</OSMaxVersionTested>
+    <OSMinVersion>6.2.0</OSMinVersion>
+    <OSMaxVersionTested>6.2.0</OSMaxVersionTested>
   </Prerequisites>
   <Resources>
     <Resource Language="x-generate" />
   </Resources>
   <Applications>
     <Application Id="App" StartPage="default.html">
-      <VisualElements DisplayName="Wishpot" Logo="images\wishpot_win8_square.png" SmallLogo="images\wishpot_win8_small.png" Description="Wishpot" ForegroundText="light" BackgroundColor="#ffffff">
-        <DefaultTile ShowName="allLogos" WideLogo="images\wishpot_win8_wide.png" />
-        <SplashScreen Image="images\splashscreen.png" BackgroundColor="#000000" />
+      <VisualElements DisplayName="MetroJavascript" Logo="images\logo.png" SmallLogo="images\smalllogo.png" Description="MetroJavascript" ForegroundText="light" BackgroundColor="#464646">
+        <DefaultTile ShowName="allLogos" />
+        <SplashScreen Image="images\splashscreen.png" />
       </VisualElements>
       <Extensions>
-        <Extension Category="windows.search" StartPage="default.html" />
+        <Extension Category="windows.search" StartPage="pages/search/search.html" />
       </Extensions>
     </Application>
   </Applications>

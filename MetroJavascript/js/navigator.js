@@ -7,22 +7,30 @@
     var ui = WinJS.UI;
     var utils = WinJS.Utilities;
 
-    WinJS.Namespace.define("WishpotMetro", {
+    WinJS.Namespace.define("Application", {
         PageControlNavigator: WinJS.Class.define(
-        // Define the constructor function for the PageControlNavigator.
-            function (element, options) {
+            // Define the constructor function for the PageControlNavigator.
+            function PageControlNavigator(element, options) {
                 this.element = element || document.createElement("div");
                 this.element.appendChild(this._createPageElement());
 
                 this.home = options.home;
+                this.lastViewstate = appView.value;
 
                 nav.onnavigated = this._navigated.bind(this);
-                appView.getForCurrentView().onviewstatechanged = this._viewstatechanged.bind(this);
+                window.onresize = this._resized.bind(this);
 
                 document.body.onkeyup = this._keyupHandler.bind(this);
                 document.body.onkeypress = this._keypressHandler.bind(this);
-                nav.navigate(this.home);
+                document.body.onmspointerup = this._mspointerupHandler.bind(this);
+
+                Application.navigator = this;
             }, {
+                /// <field domElement="true" />
+                element: null,
+                home: "",
+                lastViewstate: 0,
+
                 // This function creates a new container for each page.
                 _createPageElement: function () {
                     var element = document.createElement("div");
@@ -33,46 +41,57 @@
 
                 // This function responds to keypresses to only navigate when
                 // the backspace key is not used elsewhere.
-                _keypressHandler: function (eventObject) {
-                    if (eventObject.key === "Backspace")
+                _keypressHandler: function (args) {
+                    if (args.key === "Backspace") {
                         nav.back();
+                    }
                 },
 
                 // This function responds to keyup to enable keyboard navigation.
-                _keyupHandler: function (eventObject) {
-                    if ((eventObject.key === "Left" && eventObject.altKey) || (eventObject.key === "BrowserBack")) {
+                _keyupHandler: function (args) {
+                    if ((args.key === "Left" && args.altKey) || (args.key === "BrowserBack")) {
                         nav.back();
-                    } else if ((eventObject.key === "Right" && eventObject.altKey) || (eventObject.key === "BrowserForward")) {
+                    } else if ((args.key === "Right" && args.altKey) || (args.key === "BrowserForward")) {
+                        nav.forward();
+                    }
+                },
+
+                _mspointerupHandler: function (args) {
+                    if (args.button === 3) {
+                        nav.back();
+                    } else if (args.button === 4) {
                         nav.forward();
                     }
                 },
 
                 // This function responds to navigation by adding new pages
                 // to the DOM.
-                _navigated: function (eventObject) {
-                    var newElement = this._createPageElement();
+                _navigated: function (args) {
+                    var that = this;
+                    var newElement = that._createPageElement();
                     var parentedComplete;
                     var parented = new WinJS.Promise(function (c) { parentedComplete = c; });
 
-                    var that = this;
-                    WinJS.UI.Pages.render(eventObject.detail.location, newElement, eventObject.detail.state, parented).
-                        then(function (control) {
+                    args.detail.setPromise(
+                        WinJS.Promise.timeout().then(function () {
+                            if (that.pageElement.winControl && that.pageElement.winControl.unload) {
+                                that.pageElement.winControl.unload();
+                            }
+                            return WinJS.UI.Pages.render(args.detail.location, newElement, args.detail.state, parented);
+                        }).then(function parentElement(control) {
                             that.element.appendChild(newElement);
                             that.element.removeChild(that.pageElement);
-                            parentedComplete();
-                            document.body.focus();
                             that.navigated();
-                        });
+                            parentedComplete();
+                        })
+                    );
                 },
 
-                // This function is called by _viewstatechanged in order to
-                // pass events to the page.
-                _updateLayout: {
-                    get: function () { return (this.pageControl && this.pageControl.updateLayout) || function () { }; }
-                },
-
-                _viewstatechanged: function (eventObject) {
-                    (this._updateLayout.bind(this.pageControl))(this.pageElement, eventObject.viewState);
+                _resized: function (args) {
+                    if (this.pageControl && this.pageControl.updateLayout) {
+                        this.pageControl.updateLayout.call(this.pageControl, this.pageElement, appView.value, this.lastViewstate);
+                    }
+                    this.lastViewstate = appView.value;
                 },
 
                 // This function updates application controls once a navigation
@@ -85,8 +104,7 @@
 
                         if (nav.canGoBack) {
                             backButton.removeAttribute("disabled");
-                        }
-                        else {
+                        } else {
                             backButton.setAttribute("disabled", "disabled");
                         }
                     }
@@ -102,16 +120,6 @@
                     get: function () { return this.element.firstElementChild; }
                 }
             }
-        ),
-
-        // This function navigates to the home page which is defined when the
-        // control is created.
-        navigateHome: function () {
-            var home = document.querySelector("#contenthost").winControl.home;
-            var loc = nav.location;
-            if (loc !== "" && loc !== home) {
-                nav.navigate(home);
-            }
-        },
+        )
     });
 })();

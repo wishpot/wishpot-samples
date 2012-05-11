@@ -4,7 +4,7 @@
     var ui = WinJS.UI;
     var utils = WinJS.Utilities;
 
-    ui.Pages.define("/html/itemDetailPage.html", {
+    ui.Pages.define("/pages/itemDetail/itemDetail.html", {
         // This function is called whenever a user navigates to this page. It
         // populates the page elements with the app's data.
         ready: function (element, options) {
@@ -24,6 +24,7 @@
 
                 });
             }
+            element.querySelector(".content").focus();
         }
-    })
+    });
 })();

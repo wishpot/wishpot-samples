@@ -35,7 +35,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>26579291-003f-436d-83ee-2cda042fb388</ProjectGuid>
+    <ProjectGuid>50aa9a9a-a54e-4392-8cdf-4dda616f3d74</ProjectGuid>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\$(WMSJSProjectDirectory)\Microsoft.VisualStudio.$(WMSJSProject).Default.props" />
@@ -44,22 +44,13 @@
     <TargetPlatformIdentifier>Windows</TargetPlatformIdentifier>
     <TargetPlatformVersion>8.0</TargetPlatformVersion>
     <DefaultLanguage>en-US</DefaultLanguage>
-    <PackageCertificateKeyFile>WishpotMetro_TemporaryKey.pfx</PackageCertificateKeyFile>
-    <PackageCertificateThumbprint>8AFD3AFD85F8E90FF312906179EA697E121C5DB5</PackageCertificateThumbprint>
+    <PackageCertificateKeyFile>MetroJavascript_TemporaryKey.pfx</PackageCertificateKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <AppxManifest Include="package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <Content Include="default.html" />
     <Content Include="css\default.css" />
-    <Content Include="css\itemDetailPage.css" />
-    <Content Include="css\groupedItemsPage.css" />
-    <Content Include="html\productCollection.html" />
-    <Content Include="html\itemDetailPage.html" />
-    <Content Include="html\groupedItemsPage.html" />
-    <Content Include="html\search.css" />
-    <Content Include="html\search.html" />
     <Content Include="images\background_body.gif" />
     <Content Include="images\logo.png" />
     <Content Include="images\smalllogo.png" />
@@ -68,22 +59,33 @@
     <Content Include="images\wishpot_win8_small.png" />
     <Content Include="images\wishpot_win8_square.png" />
     <Content Include="images\wishpot_win8_wide.png" />
+    <Content Include="js\data.js" />
+    <Content Include="js\default.js" />
     <Content Include="js\external\jquery-1.7.1.js" />
     <Content Include="js\external\jquery-1.7.1.min.js" />
     <Content Include="js\external\oauth.js" />
     <Content Include="js\external\sha1.js" />
-    <Content Include="js\productCollection.js" />
-    <Content Include="js\default.js" />
     <Content Include="js\navigator.js" />
-    <Content Include="js\data.js" />
-    <Content Include="js\itemDetailPage.js" />
-    <Content Include="js\groupedItemsPage.js" />
-    <Content Include="js\search.js" />
     <Content Include="js\wpjs.js" />
-    <None Include="WishpotMetro_TemporaryKey.pfx" />
+    <Content Include="pages\itemDetail\itemDetail.css" />
+    <Content Include="pages\itemDetail\itemDetail.html" />
+    <Content Include="pages\itemDetail\itemDetail.js" />
+    <Content Include="pages\groupDetail\groupDetail.css" />
+    <Content Include="pages\groupDetail\groupDetail.html" />
+    <Content Include="pages\groupDetail\groupDetail.js" />
+    <Content Include="pages\groupedItems\groupedItems.css" />
+    <Content Include="pages\groupedItems\groupedItems.html" />
+    <Content Include="pages\groupedItems\groupedItems.js" />
+    <Content Include="default.html" />
+    <Content Include="pages\productCollection\productCollection.html" />
+    <Content Include="pages\productCollection\productCollection.js" />
+    <Content Include="pages\search\search.css" />
+    <Content Include="pages\search\search.html" />
+    <Content Include="pages\search\search.js" />
+    <None Include="MetroJavascript_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <SDKReference Include="Microsoft.WinJS, Version=0.6" />
+    <SDKReference Include="Microsoft.WinJS.1.0.RC, Version=1.0" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\$(WMSJSProjectDirectory)\Microsoft.VisualStudio.$(WMSJSProject).targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

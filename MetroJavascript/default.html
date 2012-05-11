@@ -1,28 +1,27 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <title>WishpotMetro</title>
+    <meta charset="utf-8" />
+    <title>MetroJavascript</title>
 
     <!-- WinJS references -->
-    <link href="//Microsoft.WinJS.0.6/css/ui-light.css" rel="stylesheet">
-    <script src="//Microsoft.WinJS.0.6/js/base.js"></script>
-    <script src="//Microsoft.WinJS.0.6/js/ui.js"></script>
+    <link href="//Microsoft.WinJS.1.0.RC/css/ui-dark.css" rel="stylesheet" />
+    <script src="//Microsoft.WinJS.1.0.RC/js/base.js"></script>
+    <script src="//Microsoft.WinJS.1.0.RC/js/ui.js"></script>
 
-    <!-- WishpotMetro references -->
-    <link href="/css/default.css" rel="stylesheet">
-    <script src="/js/navigator.js"></script>
-
+    <!-- MetroJavascript references -->
     <script src="/js/external/sha1.js"></script>
     <script src="/js/external/oauth.js"></script>
     <script src="/js/external/jquery-1.7.1.js"></script>
     <script src="/js/wpjs.js"></script>
 
+    <link href="/css/default.css" rel="stylesheet" />
     <script src="/js/data.js"></script>
+    <script src="/js/navigator.js"></script>
     <script src="/js/default.js"></script>
 </head>
 <body>
-    <div id="contenthost" data-win-control="WishpotMetro.PageControlNavigator" data-win-options="{home: '/html/groupedItemsPage.html'}"></div>
+    <div id="contenthost" data-win-control="Application.PageControlNavigator" data-win-options="{home: '/pages/groupedItems/groupedItems.html'}"></div>
     <!-- <div id="appbar" data-win-control="WinJS.UI.AppBar">
         <button data-win-control="WinJS.UI.AppBarCommand" data-win-options="{id:'cmd', label:'Command', icon:'placeholder'}"></button>
     </div> -->

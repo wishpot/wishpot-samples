@@ -50,7 +50,9 @@
             //TODO:implement
             getCount: function () {
                 var that = this;
-                return that._pageSize;
+                return that.itemsFromIndex(0, 0, 0).then(function (r) {
+                    return r.totalCount
+                });
             },
 
             // Called by the virtualized datasource to fetch items
@@ -150,7 +152,9 @@
             //TODO:implement
             getCount: function () {
                 var that = this;
-                return 10;
+                return that.itemsFromIndex(0, 0, 0).then(function (r) {
+                    return r.totalCount
+                });
             },
 
             // Called by the virtualized datasource to fetch items
@@ -227,7 +231,6 @@
             //TODO:implement
             getCount: function () {
                 var that = this;
-                return 4;
                 return that.itemsFromIndex(0, 0, 0).then(function (r) {
                     return r.totalCount
                 });

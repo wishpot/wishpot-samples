@@ -2,6 +2,7 @@
     cursor: default;
 }
 
+/* Custom Area */
 body {
       background: #999 url("/images/background_body.gif") top repeat-x fixed;
 }
@@ -9,6 +10,7 @@ body {
 h1, h2 {
     color: #96B940;
 }
+/* End Custom */
 
 #contenthost {
     height: 100%;
@@ -18,7 +20,7 @@ h1, h2 {
 .fragment {
     /* Define a grid with rows for a banner and a body */
     -ms-grid-columns: 1fr;
-    -ms-grid-rows: 133px 1fr 0px;
+    -ms-grid-rows: 128px 1fr 0px;
     display: -ms-grid;
     height: 100%;
     width: 100%;
@@ -83,6 +85,7 @@ h1, h2 {
             margin-left: 29px;
         }
 }
+
 
 /* Pages with an intro panel on the left */
 .introPanel {

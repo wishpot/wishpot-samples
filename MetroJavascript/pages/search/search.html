@@ -6,18 +6,26 @@
     <title>Search Contract</title>
     
     <!-- WinJS references -->
-    <link href="//Microsoft.WinJS.0.6/css/ui-light.css" rel="stylesheet">
-    <script src="//Microsoft.WinJS.0.6/js/base.js"></script>
-    <script src="//Microsoft.WinJS.0.6/js/ui.js"></script>
+     <link href="//Microsoft.WinJS.1.0.RC/css/ui-light.css" rel="stylesheet" />
+    <script src="//Microsoft.WinJS.1.0.RC/js/base.js"></script>
+    <script src="//Microsoft.WinJS.1.0.RC/js/ui.js"></script>
     
-    <link href="/css/default.css" rel="stylesheet">
-    <link href="/html/search.css" rel="stylesheet">
+    <link href="default.css" rel="stylesheet">
+    <link href="search.css" rel="stylesheet">
     <script src="/js/wpjs.js"></script>
-    <script src="/js/search.js"></script>
+    <script src="search.js"></script>
 </head>
 <body>
     <!-- This template is used to display each item in the ListView declared
          below. -->
+    <div class="itemtemplate" data-win-control="WinJS.Binding.Template">
+        <img class="item-image" src="#" data-win-bind="src: picture.tilePicture; alt: title" />
+        <div class="item-overlay">
+            <h4 class="item-title" data-win-bind="textContent: title"></h4>
+            <h6 class="item-subtitle win-type-ellipsis" data-win-bind="textContent: description"></h6>
+        </div>
+    </div>
+    <!--
     <div class="itemtemplate" data-win-control="WinJS.Binding.Template">
         <div class="item">
             <img class="item-image" src="#" data-win-bind="src: backgroundImage; alt: title" />
@@ -27,7 +35,7 @@
                 <h4 class="item-description win-type-x-small win-type-ellipsis" data-win-bind="innerHTML: description search.markText"></h4>
             </div>
         </div>
-    </div>
+    </div>-->
 
     <!-- The content that will be loaded and displayed. -->
     <div class="search fragment">
@@ -43,7 +51,7 @@
                 <ul class="filterbar"></ul>
                 <select class="filterselect"></select>
             </div>
-            <div class="resultslist" aria-label="Search results" data-win-control="WinJS.UI.ListView" data-win-options="{ selectionMode: 'none' }"></div>
+            <div class="resultslist productlist" aria-label="Search results" data-win-control="WinJS.UI.ListView" data-win-options="{ selectionMode: 'none' }"></div>
         </section>
     </div>
 </body>
