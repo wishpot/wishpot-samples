@@ -138,6 +138,94 @@
     
     );
 
+    // Definition of the data adapter
+    var userWishesDataAdapter = WinJS.Class.define(
+
+        function (userId) {
+            _userId = userId;
+        },
+
+        // Data Adapter interface methods
+        // These define the contract between the virtualized datasource and the data adapter.
+        // These methods will be called by virtualized datasource to fetch items, count etc.
+        {
+            _userId: null,
+            _pageSize: 100, //this matches the default on the server
+
+            getCount: function () {
+                var that = this;
+                return that.itemsFromIndex(0, 0, 0).then(function (r) {
+                    return r.totalCount
+                });
+            },
+
+            // Called by the virtualized datasource to fetch items
+            // It will request a specific item and hints for a number of items either side of it
+            // The implementation should return the specific item, and can choose how many either side
+            // to also send back. It can be more or less than those requested.
+            //
+            // Must return back an object containing fields:
+            //   items: The array of items of the form items=[{ key: key1, data : { field1: value, field2: value, ... }}, { key: key2, data : {...}}, ...];
+            //   offset: The offset into the array for the requested item
+            //   totalCount: (optional) update the value of the count
+            itemsFromIndex: function (requestIndex, countBefore, countAfter) {
+                var that = this;
+
+                var params = [];
+                if (_channel)
+                    params.push(["Channel", _channel]);
+
+                var firstItemPos = requestIndex + countBefore;
+                var pg = Math.floor(firstItemPos / that._pageSize) + 1;
+
+                params.push(["Pg", pg]);
+                params.push(["Limit", that._pageSize]);
+
+                return WPJS.Consumer.apiXhr("/restapi/User/" + _userId + "/Wishes", "GET", params).then(
+                    //success
+                    function (result) {
+                        WPJS.Debug("Received results from user wishes.");
+                        var results = that._parseResultJson(result);
+                        return {
+                            items: results, // The array of items
+                            offset: countBefore, //requestIndex - fetchIndex, // The offset into the array for the requested item
+                            totalCount: 100, //Math.min(count, that._maxCount), // Total count of records, bing will only return 1000 so we cap the value
+                        };
+                    },
+                    //fail
+                    function (result) {
+                        WPJS.Debug("Error from user wishes: " + result.status);
+                        return WinJS.UI.FetchError.noResponse;
+                    }
+                );
+            },
+
+            // Data adapter results needs an array of items of the shape:
+            // items =[{ key: key1, data : { field1: value, field2: value, ... }}, { key: key2, data : {...}}, ...];
+            // Form the array of results objects
+            _parseResultJson: function (result) {
+                var results = $.parseJSON(result.response);
+                var list = [];
+
+                $.each(results.Wishes, function (i, prod) {
+                    var p = parseProduct(prod);
+
+                    //skip photo-less items
+                    if (p == null || p.picture == null)
+                        return true;
+
+                    list.push({
+                        key: p.id.toString(),
+                        data: p
+                    });
+                });
+
+                return list;
+            }
+        }
+
+    );
+
 
     var channelsDataAdapter = WinJS.Class.define(
         //constructor
@@ -318,6 +406,10 @@
 
     expertsDataSource = WinJS.Class.derive(WinJS.UI.VirtualizedDataSource, function () {
         this._baseDataSourceConstructor(new expertsDataAdapter());
+    });
+
+    userWishDataSource = WinJS.Class.derive(WinJS.UI.VirtualizedDataSource, function (userId) {
+        this._baseDataSourceConstructor(new userWishesDataAdapter(userId));
     });
 
 })();

@@ -14,16 +14,25 @@
                 // If the page is snapped, the user invoked a group.
                 eventObject.detail.itemPromise.then(function (invokedItem) {
                     // Access item data from the itemPromise
-                    nav.navigate("/pages/productCollection/productCollection.html", { group: invokedItem.data });
+                    nav.navigate("/pages/productCollection/productCollection.html", { item: invokedItem.data });
                 });
             } else {
                 // If the page is not snapped, the user invoked an item.
                 eventObject.detail.itemPromise.then(function (invokedItem) {
                     // Access item data from the itemPromise
-                    invokedItem.data.group_title = "Popular Items";
+                    invokedItem.data.groupTitle = "Popular Items";
                     nav.navigate("/pages/itemDetail/itemDetail.html", { item: invokedItem.data });
                 });
             }
+        },
+
+        userInvoked: function (eventObject) {
+            eventObject.detail.itemPromise.then(function (invokedItem) {
+                // Access item data from the itemPromise
+                invokedItem.data.groupTitle = "Items from " + invokedItem.data.screenName;
+                invokedItem.data.dataSource = new userWishDataSource(invokedItem.data.id);
+                nav.navigate("/pages/productCollection/productCollection.html", { item: invokedItem.data });
+            });
         },
 
         // This function is called whenever a user navigates to this page. It
@@ -54,7 +63,7 @@
 
             ui.setOptions(communityView, {
                 itemTemplate: element.querySelector(".userTemplate"),
-                oniteminvoked: this.productInvoked.bind(this),
+                oniteminvoked: this.userInvoked.bind(this),
                 itemDataSource: communityDataSource
             });
 
