@@ -96,11 +96,12 @@
                     //success
                     function (result) {
                         WPJS.Debug("Received results from popular products.");
-                        var results = that._parseResultJson(result);
+                        var response = $.parseJSON(result.response);
+                        var results = that._parseResultJson(response);
                         return {
                             items: results, // The array of items
                             offset: countBefore, //requestIndex - fetchIndex, // The offset into the array for the requested item
-                            totalCount: 1000, //Math.min(count, that._maxCount), // Total count of records, bing will only return 1000 so we cap the value
+                            totalCount: Math.min(response.FullResultCount, 1000), // Total count of records, but cap the value so we don't go crazy fetching
                         };
                     },
                     //fail
@@ -114,9 +115,7 @@
             // Data adapter results needs an array of items of the shape:
             // items =[{ key: key1, data : { field1: value, field2: value, ... }}, { key: key2, data : {...}}, ...];
             // Form the array of results objects
-            _parseResultJson: function (result) {
-                console.log(result);
-                var results = $.parseJSON(result.response);
+            _parseResultJson: function (results) {
                 var list = [];
  
                 $.each(results.Results, function (i, prod) {
@@ -153,10 +152,17 @@
             _pageSize: 100, //this matches the default on the server
 
             getCount: function () {
-                var that = this;
-                return that.itemsFromIndex(0, 0, 0).then(function (r) {
-                    return r.totalCount
-                });
+                return WPJS.Consumer.apiXhr("/restapi/User/" + _userId + "/Wishes/Count", "GET").then(
+                    //success
+                    function (result) {
+                        return parseInt(result.response);
+                    },
+                    //fail
+                    function (result) {
+                        WPJS.Debug("Error from user wish count: " + result.status);
+                        return WinJS.UI.FetchError.noResponse;
+                    }
+                );
             },
 
             // Called by the virtualized datasource to fetch items
